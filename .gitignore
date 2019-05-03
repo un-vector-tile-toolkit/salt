@@ -1,4 +1,3 @@
-Rakefile
 src
 dst/*
 temporary.geojsons
