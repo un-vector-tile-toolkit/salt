@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/un-vector-tile-toolkit/salt#readme",
   "dependencies": {
+    "@mapbox/polylabel": "^1.0.2",
     "json-text-sequence": "^0.1.1"
   }
 }

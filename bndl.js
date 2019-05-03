@@ -1,5 +1,7 @@
-const { spawn } = require('child_process')
+const { spawn, spawnSync } = require('child_process')
+const fs = require('fs')
 const ogr2ogr = '/usr/local/bin/ogr2ogr'
+const tmpPath = 'temporary.geojsons'
 const Parser = require('json-text-sequence').parser
 
 if (process.argv.length < 3) {
@@ -19,20 +21,17 @@ const modify = (f) => {
   }
 }
 
-const post = spawn(ogr2ogr, [
-  '-f', 'ESRI Shapefile',
-  '-overwrite',
-  'dst/bndl.shp',
-  '/vsistdin/'
-], { stdio: ['pipe', 'inherit', 'inherit'] })
-
 let nProcesses = 0
+const w = fs.createWriteStream(tmpPath)
 for (let i = 2; i < process.argv.length; i++) {
   const shpPath = process.argv[i]
   const pre = spawn(ogr2ogr, [
+    '-skipfailures',
+    '-dim', '2',
+    '-oo', 'ENCODING=ISO-8859-1',
     '-f', 'GeoJSONSeq',
     '-lco', 'RS=YES',
-    '/vsistdout/',
+    tmpPath,
     shpPath
   ], { stdio: ['inherit', 'pipe', 'inherit'] })
   nProcesses++
@@ -40,14 +39,21 @@ for (let i = 2; i < process.argv.length; i++) {
     .on('data', f => {
       f = modify(f)
       if (f) {
-        s = `\x1e${JSON.stringify(f)}\n`
-        post.stdin.write(s)
+        let s = `\x1e${JSON.stringify(f)}\n`
+        w.write(s)
       }
     })
     .on('finish', () => {
       nProcesses--
       if (nProcesses === 0) {
-        post.stdin.end()
+        w.close()
+        spawnSync(ogr2ogr, [
+          '-skipfailures',
+          '-f', 'ESRI Shaepfile',
+          '-overwrite',
+          'dst/bndl.shp',
+          tmpPath
+        ], { stdio: ['inherit', 'inherit', 'inherit'] })
       }
     })
   )

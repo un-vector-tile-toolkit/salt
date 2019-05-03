@@ -1,6 +1,8 @@
 Rakefile
 src
 dst/*
+temporary.geojsons
+*.zip
 
 # Logs
 logs
