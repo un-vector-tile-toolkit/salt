@@ -1,0 +1,23 @@
+{
+  "name": "salt",
+  "version": "1.0.0",
+  "description": "Utility script to convert Global Map administrative area data to SALB input data",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/un-vector-tile-toolkit/salt.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "Unlicense",
+  "bugs": {
+    "url": "https://github.com/un-vector-tile-toolkit/salt/issues"
+  },
+  "homepage": "https://github.com/un-vector-tile-toolkit/salt#readme",
+  "dependencies": {
+    "json-text-sequence": "^0.1.1"
+  }
+}

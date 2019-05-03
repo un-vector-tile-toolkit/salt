@@ -1,3 +1,7 @@
+Rakefile
+src
+dst/*
+
 # Logs
 logs
 *.log

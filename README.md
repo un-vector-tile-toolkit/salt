@@ -17,10 +17,22 @@ Utility script to convert Global Map administrative area data to SALB input data
 - `DATSOR`: Date of source; date of the receipt of the dataset, in the format of DD/MM/YYYY.
 
 # about the input data
-## DATSOR issue
+## for bndl
+### Data mapping from Global Map
+- Data with `use` value `26` or `30` are used. Data with other `use` values are not converted.
+
+```javascript
+f.properties = {
+  ISO3CD: f.properties.soc,
+  BDYTYP: {26: 1, 30: 2}[f.properties.use]
+}
+```
+
+## for bnda
+### DATSOR issue
 https://github.com/globalmaps/metadata/blob/master/metadata.csv has the release date from ISCGM.
 
-## Data mapping from Global Map
+### Data mapping from Global Map
 This is based on Global Map version 2 specifications, but can possibley applied for Global Map version 1 which is without `salb` property. 
 
 ```javascript
@@ -28,7 +40,7 @@ f.properties = {
   ISO3CD: f.properties.coc,
   ADM1NM: f.properties.nam,
   ADM1CD: f.properties.salb,
-  ADN2NM: f.properties.laa,
+  ADM2NM: f.properties.laa,
   ADM2CD: f.properties.salb,
   DATSOR: datsor
 }
@@ -47,7 +59,7 @@ npm install
 
 ## run
 ```console
-node bndl.js 2008-11-20 your/bndl.shp
+node bndl.js your/bndl.shp
 node bndp.js 2008-11-20 your/bndp.shp your/bnda.shp
 ```
 
